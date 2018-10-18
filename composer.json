@@ -1,0 +1,26 @@
+{
+    "name": "yidemir/security",
+    "description": "Demir PHP standalone simple security components",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yılmaz Demir",
+            "email": "demiriy@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.1.0",
+        "ext-json": "*",
+        "ext-openssl": "*",
+        "ext-gd": "*",
+        "ext-mbstring": "*",
+        "ext-ctype": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Demir\\Security\\": "src/"
+        }
+    }
+}
