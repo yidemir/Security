@@ -1,6 +1,6 @@
 # Demir Security Components
 
-## Introduction
+## Introduction
 Simple securtiy components for any PHP project.
 
 ## Features
@@ -10,5 +10,5 @@ Simple securtiy components for any PHP project.
 * Simple Captcha component (very simple captcha component)
 * Validation component (Validate forms or any data)
 
-## License
+## License
 MIT
