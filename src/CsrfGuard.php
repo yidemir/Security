@@ -14,6 +14,13 @@ class CsrfGuard
   protected static $timeout = 900;
 
   /**
+   * Jetonu tutar
+   * 
+   * @static string
+   */
+  protected static $token;
+
+  /**
    * Session kontrolü yapar
    *
    * @throws \Exception
@@ -46,14 +53,15 @@ class CsrfGuard
   public static function getToken() : string
   {
     static::boot();
-    $token = base64_encode(openssl_random_pseudo_bytes(32));
+    
     $_SESSION['_csrf']['time'] = time();
     $_SESSION['_csrf']['ip'] = $_SERVER['REMOTE_ADDR'];
-    if (isset($_SESSION['_csrf']['token']) && !is_array($_SESSION['_csrf']['token'])) {
-      $_SESSION['_csrf']['token'] = [];
+    
+    if (is_null(static::$token)) {
+      static::$token = base64_encode(openssl_random_pseudo_bytes(32));
     }
-
-    return $_SESSION['_csrf']['token'][] = $token;
+    
+    return $_SESSION['_csrf']['token'] = static::$token;
   }
 
   /**
@@ -72,7 +80,7 @@ class CsrfGuard
         $_POST['_CSRF_TOKEN'] : '') : $token;
 
     $result = static::checkTimeout() &&
-      in_array($token, $_SESSION['_csrf']['token']) &&
+      $_SESSION['_csrf']['token'] === $token &&
       $_SESSION['_csrf']['ip'] === $_SERVER['REMOTE_ADDR'];
 
     static::flush();
