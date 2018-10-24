@@ -49,7 +49,11 @@ class CsrfGuard
     $token = base64_encode(openssl_random_pseudo_bytes(32));
     $_SESSION['_csrf']['time'] = time();
     $_SESSION['_csrf']['ip'] = $_SERVER['REMOTE_ADDR'];
-    return $_SESSION['_csrf']['token'] = $token;
+    if (isset($_SESSION['_csrf']['token']) && !is_array($_SESSION['_csrf']['token'])) {
+      $_SESSION['_csrf']['token'] = [];
+    }
+
+    return $_SESSION['_csrf']['token'][] = $token;
   }
 
   /**
@@ -68,7 +72,7 @@ class CsrfGuard
         $_POST['_CSRF_TOKEN'] : '') : $token;
 
     $result = static::checkTimeout() &&
-      $_SESSION['_csrf']['token'] === $token &&
+      in_array($token, $_SESSION['_csrf']['token']) &&
       $_SESSION['_csrf']['ip'] === $_SERVER['REMOTE_ADDR'];
 
     static::flush();
